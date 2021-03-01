@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablero de Mensajes</title>
+    <!--estilos-->
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!--bootstrap-->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <script src="/static/js/jquery-3.5.1.min.js">
+    </script>
+    <script src="/static/js/bootstrap.bundle.min.js">
+    </script>
+    <!--estilos propios-->
+    <style>
+
+    </style>
+    <!--fin estilos-->
+</head>
+
+<body>
+    <div class="container">
+        <h3>The Dojo Message Board</h3>
+
+        <form action="/message/new" method="POST" class="mb-5">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Name:</label>
+                <input type="text" class="form-control" name="name">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Message:</label>
+                <input type="text" class="form-control" id="exampleInputPassword1" name="message">
+            </div>
+            <input class="btn btn-primary btnAdd" type="submit" value="Post message">
+        </form>
+
+        <% for (message of messages) { %>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <%= message.message%> (
+                        <%= message.author%>)
+                </li>
+            </ul>
+            <% } %>
+
+    </div>
+
+
+
+    <script>
+    </script>
+</body>
+
+</html>

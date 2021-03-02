@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { Message } = require('../db')
+const { Message, Comment } = require('../db')
 const router = Router();
 
 //ejemplo de inicio del sistema. imprime una variable de sesion en la vista.
@@ -10,12 +10,22 @@ const router = Router();
 //mostrar mensajes
 router.get("/", async(req, res) => {
 
-    //primero encontramos todas las citas
-    const messages = await Message.findAll();
+    //const messages = await Message.findAll();
+    const messages = await Message.findAll({
+        include: [{ model: Comment }]
+    });
     res.render("index.ejs", { messages: messages });
     //como se llama la variable : valor que va a tener
 });
 
+//mostrar comentarios
+/*router.get("/", async(req, res) => {
+
+    const comments = await Comment.findAll();
+
+    res.render("index.ejs", { comments: comments });
+    //como se llama la variable : valor que va a tener
+});*/
 
 //crear nuevos mensajes
 router.post("/message/new", async(req, res) => {
@@ -31,43 +41,29 @@ router.post("/message/new", async(req, res) => {
     res.redirect("/");
 });
 
-//eliminar citas
-/*router.get('/quotes/delete/:id', async(req, res) => {
-    //encontramos la cita a eliminar mediante su id
-    const quote = await Quote.findByPk(req.params.id);
-    //una vez encontrada la eliminamos
-    await quote.destroy();
-    //mensaje de eliminado
-    req.flash('mensaje', 'quote deleted');
-    //redirigimos hacia la lista de citas
-    res.redirect("/quotes", );
+//crear nuevos comentarios
+router.post("/comment/new", async(req, res) => {
+
+    const author = req.body.name2;
+    const comment = req.body.comment;
+    const MessageId = req.body.messageId;
+
+    // usamos modelos para agregar nuevos comentarios
+    const new_comment = await Comment.create({
+        author: req.body.name2,
+        comment: req.body.comment,
+        MessageId: req.body.messageId
+    });
+    res.redirect("/");
 });
 
-//editar citas
-router.get('/quotes/edit/:id', async(req, res) => {
-    //encontramos la cita a eliminar mediante su id
-    const quote = await Quote.findByPk(req.params.id);
-    let mensaje = req.flash("mensaje");
-    let error = req.flash("error");
-    //primero encontramos todas las citas
-    const quotes = await Quote.findAll();
-    res.render("edit", { quote, mensaje, error });
-    //como se llama la variable : valor que va a tener
-});
 
-router.post('/quote/edit/:id', async(req, res) => {
-    let mensaje = req.flash("mensaje");
-    //encontramos la cita a editar mediante su id
-    const quote = await Quote.findByPk(req.params.id);
-    quote.author = req.body.author;
-    quote.quote = req.body.quote;
 
-    await quote.save();
 
-    res.redirect("/quotes");
-    //como se llama la variable : valor que va a tener
-});
-*/
+
+
+
+
 
 
 

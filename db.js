@@ -25,6 +25,26 @@ const Message = sql.define('Message', {
     }
 }, { timestamps: true });
 
+const Comment = sql.define('Comment', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    author: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    comment: {
+        type: Sequelize.STRING,
+        allowNull: false
+    }
+}, { timestamps: true });
+
+// Estas son relaciones uno a muchos
+Message.hasMany(Comment); // cada mensaje puede tener varios comentarios
+Comment.belongsTo(Message); // cada comentario pertenece a solo un mensaje
+
 
 // sincronizamos nuestro codigo con la base de datos
 sql.sync()
@@ -35,4 +55,5 @@ sql.sync()
 // finalmente listamos los modelos que queremos exportar    
 module.exports = {
     Message,
+    Comment
 };
